@@ -5,9 +5,10 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.pool import NullPool
 from passlib.context import CryptContext
 from jose import JWTError, jwt
 
@@ -15,18 +16,31 @@ from jose import JWTError, jwt
 SECRET_KEY = os.getenv("JWT_SECRET", "fallback-secret-for-debugging")
 ALGORITHM = "HS256"
 
-raw_url = os.getenv("POSTGRES_URL")
+# Vercel/Supabase may set the URL under different env var names
+raw_url = (
+    os.getenv("POSTGRES_URL")
+    or os.getenv("DATABASE_URL")
+    or os.getenv("POSTGRES_URL_NON_POOLING")
+)
+
 if not raw_url:
-    print("CRITICAL: POSTGRES_URL is not set!")
+    print("CRITICAL: No database URL found in environment!")
     DATABASE_URL = "sqlite:///./test.db"
-elif raw_url.startswith("postgres://"):
-    DATABASE_URL = raw_url.replace("postgres://", "postgresql://", 1)
 else:
-    DATABASE_URL = raw_url
-ACCESS_TOKEN_EXPIRE_MINUTES = 26280000 # ~50 years
+    # Fix the postgres:// prefix for SQLAlchemy (requires postgresql://)
+    DATABASE_URL = raw_url.replace("postgres://", "postgresql://", 1)
+    # Supabase requires SSL — append sslmode if not already present
+    if "sslmode" not in DATABASE_URL:
+        separator = "&" if "?" in DATABASE_URL else "?"
+        DATABASE_URL += f"{separator}sslmode=require"
+
+ACCESS_TOKEN_EXPIRE_MINUTES = 26280000  # ~50 years
 
 # --- DB SETUP ---
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+engine = create_engine(
+    DATABASE_URL,
+    poolclass=NullPool,  # Serverless: fresh connection per request, no pool
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -38,7 +52,7 @@ class Laundry(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     phone = Column(String)
-    status = Column(String, default="Received")
+    status = Column(String)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 class Staff(Base):
@@ -95,6 +109,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Auto-create tables on startup
+@app.on_event("startup")
+def on_startup():
+    Base.metadata.create_all(bind=engine)
+
+# Health check — useful for verifying Supabase connection
+@app.get("/api/health")
+def health_check():
+    try:
+        db = SessionLocal()
+        db.execute(text("SELECT 1"))
+        db.close()
+        return {"status": "ok", "database": "connected"}
+    except Exception as e:
+        return {"status": "error", "database": str(e)}
 
 # --- ENDPOINTS ---
 
