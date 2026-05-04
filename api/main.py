@@ -29,10 +29,11 @@ if not raw_url:
 else:
     # Fix the postgres:// prefix for SQLAlchemy (requires postgresql://)
     DATABASE_URL = raw_url.replace("postgres://", "postgresql://", 1)
-    # Supabase requires SSL — append sslmode if not already present
-    if "sslmode" not in DATABASE_URL:
-        separator = "&" if "?" in DATABASE_URL else "?"
-        DATABASE_URL += f"{separator}sslmode=require"
+    # Strip any query params that psycopg2 doesn't understand (e.g. Vercel's ?supa=...)
+    if "?" in DATABASE_URL:
+        DATABASE_URL = DATABASE_URL.split("?")[0]
+    # Supabase requires SSL
+    DATABASE_URL += "?sslmode=require"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 26280000  # ~50 years
 
