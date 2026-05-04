@@ -113,7 +113,10 @@ app.add_middleware(
 # Auto-create tables on startup
 @app.on_event("startup")
 def on_startup():
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print(f"WARNING: Could not create tables on startup: {e}")
 
 # Health check — useful for verifying Supabase connection
 @app.get("/api/health")
@@ -125,6 +128,17 @@ def health_check():
         return {"status": "ok", "database": "connected"}
     except Exception as e:
         return {"status": "error", "database": str(e)}
+
+# Debug: show which env vars are present (no values exposed)
+@app.get("/api/debug")
+def debug_env():
+    return {
+        "POSTGRES_URL": bool(os.getenv("POSTGRES_URL")),
+        "DATABASE_URL": bool(os.getenv("DATABASE_URL")),
+        "POSTGRES_URL_NON_POOLING": bool(os.getenv("POSTGRES_URL_NON_POOLING")),
+        "JWT_SECRET": bool(os.getenv("JWT_SECRET")),
+        "resolved_db_url_prefix": DATABASE_URL[:30] + "..." if len(DATABASE_URL) > 30 else DATABASE_URL,
+    }
 
 # --- ENDPOINTS ---
 
