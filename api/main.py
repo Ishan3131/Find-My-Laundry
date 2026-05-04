@@ -154,12 +154,29 @@ def get_status_public(bag_id: int, db: Session = Depends(get_db)):
 # 2. STAFF: Login
 @app.post("/api/token")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(Staff).filter(Staff.username == form_data.username).first()
-    if not user or not pwd_context.verify(form_data.password, user.hashed_password):
-        raise HTTPException(status_code=400, detail="Invalid credentials")
-    
-    token = jwt.encode({"sub": user.username}, SECRET_KEY, algorithm=ALGORITHM)
-    return {"access_token": token, "token_type": "bearer"}
+    try:
+        user = db.query(Staff).filter(Staff.username == form_data.username).first()
+        if not user or not pwd_context.verify(form_data.password, user.hashed_password):
+            raise HTTPException(status_code=400, detail="Invalid credentials")
+        
+        token = jwt.encode({"sub": user.username}, SECRET_KEY, algorithm=ALGORITHM)
+        return {"access_token": token, "token_type": "bearer"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Login error: {type(e).__name__}: {str(e)}")
+
+# Seed: Create admin user (call once, then remove)
+@app.post("/api/seed")
+def seed_admin(db: Session = Depends(get_db)):
+    existing = db.query(Staff).filter(Staff.username == "admin").first()
+    if existing:
+        return {"message": "Admin already exists"}
+    hashed = pwd_context.hash("id#y@tt")
+    admin = Staff(username="admin", hashed_password=hashed)
+    db.add(admin)
+    db.commit()
+    return {"message": "Admin user created"}
 
 # 3. STAFF: Get One Bag (Full Data: Name, Phone, Status, Time)
 @app.get("/api/staff/laundry/{bag_id}", response_model=StaffBagResponse)
