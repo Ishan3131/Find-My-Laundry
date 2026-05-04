@@ -12,7 +12,12 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 
 # --- CONFIGURATION ---
-DATABASE_URL = os.getenv("POSTGRES_URL")
+raw_url = os.getenv("POSTGRES_URL")
+if raw_url and raw_url.startswith("postgres://"):
+    DATABASE_URL = raw_url.replace("postgres://", "postgresql://", 1)
+else:
+    DATABASE_URL = raw_url
+
 SECRET_KEY = os.getenv("JWT_SECRET") 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 26280000 # ~50 years
