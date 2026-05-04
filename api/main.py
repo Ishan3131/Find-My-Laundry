@@ -12,14 +12,17 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 
 # --- CONFIGURATION ---
+SECRET_KEY = os.getenv("JWT_SECRET", "fallback-secret-for-debugging")
+ALGORITHM = "HS256"
+
 raw_url = os.getenv("POSTGRES_URL")
-if raw_url and raw_url.startswith("postgres://"):
+if not raw_url:
+    print("CRITICAL: POSTGRES_URL is not set!")
+    DATABASE_URL = "sqlite:///./test.db"
+elif raw_url.startswith("postgres://"):
     DATABASE_URL = raw_url.replace("postgres://", "postgresql://", 1)
 else:
     DATABASE_URL = raw_url
-
-SECRET_KEY = os.getenv("JWT_SECRET") 
-ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 26280000 # ~50 years
 
 # --- DB SETUP ---
