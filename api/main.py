@@ -84,7 +84,7 @@ async def get_current_staff(token: str = Depends(oauth2_scheme), db: Session = D
     return user
 
 # --- APP ---
-app = FastAPI()
+app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
 
 app.add_middleware(
     CORSMiddleware,
