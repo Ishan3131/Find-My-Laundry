@@ -1,11 +1,29 @@
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/auth", "destination": "/api" },
-    { "source": "/auth/:path*", "destination": "/api" },
-    { "source": "/laundries", "destination": "/api" },
-    { "source": "/laundries/:path*", "destination": "/api" },
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/auth",
+      "destination": "/api"
+    },
+    {
+      "source": "/auth/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/laundries",
+      "destination": "/api"
+    },
+    {
+      "source": "/laundries/:path*",
+      "destination": "/api"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
   ],
   "buildCommand": "cd client && npm install && npm run build",
   "outputDirectory": "client/dist"
