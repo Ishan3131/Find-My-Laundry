@@ -1,10 +1,16 @@
+import { BrowserRouter, Routes, Route } from 'react-router'
+import LoginPage from './pages/LoginPage'
+import StaffPage from './pages/StaffPage'
+import UserPage from './pages/UserPage'
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-950">
-      <h1 className="text-4xl font-bold text-white">
-        Find My Laundry 🧺
-      </h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<UserPage/>} />
+        <Route path='/staff' element={<StaffPage />} />
+        <Route path='login' element={<LoginPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

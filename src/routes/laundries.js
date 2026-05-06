@@ -8,14 +8,16 @@ const router = express.Router();
 
 /**
  * GET /laundries/:id
- * Returns a single laundry bag by ID.
+ * Public bag lookup by ID.
+ * No authentication required.
+ * Returns only: { id, status }
  * No authentication required.
  */
 router.get("/:id", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("laundries")
-      .select("*")
+      .select("id,status")
       .eq("id", req.params.id)
       .single();
 
@@ -32,6 +34,30 @@ router.get("/:id", async (req, res) => {
 
 // ── All routes below require authentication ──
 router.use(verifyToken);
+
+/**
+ * GET /laundries/:id/details
+ * Token required.
+ * Returns a single laundry bag by ID with all details.
+ */
+router.get("/:id/details", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("laundries")
+      .select("*")
+      .eq("id", req.params.id)
+      .single();
+
+    if (error || !data) {
+      return res.status(404).json({ error: "Laundry bag not found" });
+    }
+
+    return res.json({ laundry: data });
+  } catch (err) {
+    console.error("GET /laundries/:id/details error:", err.message);
+    return res.status(500).json({ error: "Failed to fetch laundry" });
+  }
+});
 
 /**
  * GET /laundries
