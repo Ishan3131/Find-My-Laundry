@@ -1,6 +1,6 @@
-function StaffPage() {
+function StaffPage(props) {
     return (
-        <div>Saffpage</div>
+        <div>Staff Page</div>
     )
 }
 
