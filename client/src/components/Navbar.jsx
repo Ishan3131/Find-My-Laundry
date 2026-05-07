@@ -1,69 +1,77 @@
-import LayoutGridIcon from "../assets/icons/layout-grid.svg"
-import ClockIcon from "../assets/icons/clock-3.svg"
-import DropletsIcon from "../assets/icons/droplets.svg"
-import CheckIcon from "../assets/icons/check-check.svg"
-import ArchiveIcon from "../assets/icons/archive.svg"
+import LayoutGridIcon from '../assets/icons/layout-grid.svg'
+import ClockIcon from '../assets/icons/clock-3.svg'
+import DropletsIcon from '../assets/icons/droplets.svg'
+import CheckIcon from '../assets/icons/check-check.svg'
+import ArchiveIcon from '../assets/icons/archive.svg'
 
 const filters = [
   {
-    name: "All",
+    name: 'All',
     count: 24,
     icon: LayoutGridIcon,
   },
   {
-    name: "Pending",
+    name: 'Pending',
     count: 8,
     icon: ClockIcon,
   },
   {
-    name: "Washed",
+    name: 'Washed',
     count: 6,
     icon: DropletsIcon,
   },
   {
-    name: "Done",
+    name: 'Done',
     count: 5,
     icon: CheckIcon,
   },
   {
-    name: "Collected",
+    name: 'Collected',
     count: 5,
     icon: ArchiveIcon,
   },
 ]
 
-function Navbar({ isDark }) {
+function Navbar(props) {
+
   return (
-    <div className="overflow-x-auto">
 
-      <div
-        className={`
-          flex
-          w-max
-          min-w-full
-          rounded-[26px]
-          overflow-hidden
-          border
+    <div
+      className={`
+        fixed
+        bottom-4
+        left-1/2
+        -translate-x-1/2
+        w-[95%]
+        max-w-lg
+        rounded-[26px]
+        border
+        overflow-hidden
+        z-50
 
-          ${isDark
-            ? "bg-[#202020] border-[#343434]"
-            : "bg-[#f7f7f5] border-[#d5d5d5]"
-          }
-        `}
-      >
+        ${props.lightTheme
+          ? 'bg-[#f7f7f5] border-[#d5d5d5]'
+          : 'bg-[#202020] border-[#343434]'
+        }
+      `}
+    >
+
+      <div className='flex overflow-x-auto'>
 
         {filters.map((item) => (
+
           <button
             key={item.name}
             className={`
-              flex items-center gap-2
-              px-5 py-4
+              flex flex-col items-center justify-center
+              min-w-[78px]
+              py-3
               border-r
               last:border-r-0
 
-              ${isDark
-                ? "border-[#343434]"
-                : "border-[#d5d5d5]"
+              ${props.lightTheme
+                ? 'border-[#d5d5d5]'
+                : 'border-[#343434]'
               }
             `}
           >
@@ -72,43 +80,36 @@ function Navbar({ isDark }) {
               src={item.icon}
               alt={item.name}
               className={`
-                w-5 h-5
-                ${isDark ? "invert brightness-0" : ""}
+                w-5 h-5 mb-1
+                ${props.lightTheme ? '' : 'invert brightness-0'}
               `}
             />
 
-            <span
+            <p
               className={`
-                text-[15px]
+                text-[13px]
 
-                ${isDark
-                  ? "text-[#f5f5f5]"
-                  : "text-[#2b2b2b]"
+                ${props.lightTheme
+                  ? 'text-[#2b2b2b]'
+                  : 'text-white'
                 }
               `}
             >
               {item.name}
-            </span>
+            </p>
 
-            <span
-              className={`
-                text-[12px]
-
-                ${isDark
-                  ? "text-[#9f9f9f]"
-                  : "text-[#8e8e8e]"
-                }
-              `}
-            >
+            <p className='text-[11px] text-[#8e8e8e]'>
               {item.count}
-            </span>
+            </p>
 
           </button>
+
         ))}
 
       </div>
 
     </div>
+
   )
 }
 
