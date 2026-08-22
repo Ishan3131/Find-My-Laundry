@@ -27,6 +27,7 @@ function Bags(props) {
     }
     catch (err) {
       console.log(err)
+      setStatus(prevStatus);
       setMessageBoxClass('text-red-400')
       setMessageBoxText('Request Failed')
       setPopMessage(true)
