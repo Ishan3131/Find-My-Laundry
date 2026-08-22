@@ -83,6 +83,11 @@ function StaffPage(props) {
         }
     }
 
+    function logout() {
+        localStorage.removeItem('token');
+        navigate('/login');
+    }
+
     return (
         <div
         className={`
@@ -94,8 +99,12 @@ function StaffPage(props) {
         }>
 
             <div
-            className='pt-3 pl-3'>
+            className='pt-3 pl-3 flex justify-between'>
                 <ToggleThemeButton lightTheme={props.lightTheme} setLightTheme={props.setLightTheme} />
+                <button 
+                className={`mr-5 border border-solid border-${props.lightTheme? 'black' : 'white'} rounded-[20px] py-[3px] px-[8px]`}
+                onClick={logout}
+                >Logout</button>
             </div>
             <br />
 
