@@ -15,11 +15,42 @@ function verifyToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // { username, iat, exp }
+
+    req.user = {
+      id: decoded.id,
+      username: decoded.username,
+      role: normalizeRole(decoded.role),
+    };
+
     next();
   } catch (err) {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
 }
 
-module.exports = verifyToken;
+function normalizeRole(role) {
+  return String(role || "").trim().toLowerCase();
+}
+
+function requireRoles(...allowedRoles) {
+  const allowed = allowedRoles.map((role) => normalizeRole(role));
+
+  return (req, res, next) => {
+    const userRole = normalizeRole(req.user?.role);
+
+    if (!userRole || !allowed.includes(userRole)) {
+      return res.status(403).json({
+        error: "Forbidden",
+        message: `This action is not allowed for role: ${userRole || "unknown"}`,
+      });
+    }
+
+    next();
+  };
+}
+
+module.exports = {
+  verifyToken,
+  requireRoles,
+  normalizeRole,
+};
