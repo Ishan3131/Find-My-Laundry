@@ -1,10 +1,7 @@
-
 import { useState } from "react";
 import shoppingBag from "../assets/icons/shopping-bag.svg";
 import MessageBox from "./MessageBox";
 import axios from "axios";
-import tick from "../assets/icons/tick.svg";
-import cross from "../assets/icons/cross.svg";
 
 let prevStatus = null
 function Bags(props) {
@@ -127,19 +124,6 @@ function Bags(props) {
 
 
       <div className='flex flex-col items-center gap-5'>
-          <div className='float flex gap-5'>
-        {statusChanged && <button className='text-[20px]' onClick={updateStatus}>
-          <img
-  src={tick} alt="Confirm" className={`w-7 h-7 ${
-    props.lightTheme ? "brightness-0" : "brightness-0 invert"
-  }`}/>
-        </button> }
-        {statusChanged && <button className='text-[20px]' onClick={abortStatusUpdate}>
-          <img
-  src={cross} alt="Confirm" className={`w-7 h-7 ${
-    props.lightTheme ? "brightness-0" : "brightness-0 invert"
-  }`}/>
-        </button> }
         <select
 
           value={status}
@@ -208,7 +192,9 @@ function Bags(props) {
           </option>
 
         </select>
-    
+      <div className='float flex gap-5'>
+        {statusChanged && <button className='text-[20px]' onClick={updateStatus}>✅</button> }
+        {statusChanged && <button className='text-[20px]' onClick={abortStatusUpdate}>❌</button> }
       </div>
         </div>
       </div>
@@ -267,7 +253,7 @@ function Bags(props) {
 
           <div
             className={`
-              text-base
+              text-xs
               sm:text-sm
 
               ${props.lightTheme
@@ -283,9 +269,8 @@ function Bags(props) {
 
           <div
             className={`
-              text-lg
-              lg:text-2xl
-              font-bold
+              text-xs
+              sm:text-sm
 
               ${props.lightTheme
 
@@ -333,7 +318,6 @@ function Bags(props) {
 
       </div>
     { popMessage && <MessageBox style={messageBoxClass} text={messageBoxText} lightTheme={props.lightTheme} /> }
-    
     </div>
 
   )

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 
 import shoppingBag from "../assets/icons/shopping-bag.svg";
@@ -220,4 +219,3 @@ function UserBags(props) {
 }
 
 export default UserBags;
-

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import ToggleThemeButton from '../components/ToggleThemeButton'
@@ -113,7 +112,7 @@ function StaffPage(props) {
             {loading && <h1 className='font-bold text-2xl m-3'>Loading...</h1>}
             <div className='flex justify-between p-2 items-center'>
                 <h1 className='font-bold text-2xl m-3'>Bags Count: {bagsCount}</h1>
-                <button className={`${props.lightTheme? 'bg-[#a6f495]' : 'bg-[#1c9600]'} h-fit w-fit px-3 py-1 font-bold rounded-[5px] ${props.lightTheme?'text-black': 'text-white'}`} onClick={() => setAddBagForm(true)}>New Bag</button>
+                <button className={`${props.lightTheme? 'bg-[#7eff61]' : 'bg-[#1c9600]'} h-fit w-fit px-3 py-1 font-bold rounded-[5px] ${props.lightTheme?'text-black': 'text-white'}`} onClick={() => setAddBagForm(true)}>New Bag</button>
             </div>
             <div
             className='flex flex-col gap-5'>
@@ -127,9 +126,9 @@ function StaffPage(props) {
             <div className='fixed bottom-0 w-full'>
                 <Navbar lightTheme={props.lightTheme} setLightTheme={props.setLightTheme} allBagsData={allBagsData} setStaffRenderedBags={setStaffRenderedBags} setBagsCount={setBagsCount} />
             </div>
-            {addBagForm && <AddBag lightTheme={props.lightTheme} handleAddBag={handleAddNewBag} setNewBag={setNewBag} newBag={newBag} setAddBagForm={setAddBagForm}  />}
+        {addBagForm && <AddBag lightTheme={props.lightTheme} handleAddBag={handleAddNewBag} setNewBag={setNewBag} newBag={newBag} setAddBagForm={setAddBagForm}  />}
         </div>
     )
 }
 
-export default StaffPage;
+export default StaffPage
