@@ -105,7 +105,7 @@ function StaffPage(props) {
             <h1 className='font-bold text-2xl m-3'>{searchMessage}</h1>
 
             {
-            staffSearchResult != null && <StaffBagBox id={staffSearchResult.id} status={staffSearchResult.status} name={staffSearchResult.name} phone={staffSearchResult.phone} lightTheme={props.lightTheme} />
+            staffSearchResult != null && <StaffBagBox id={staffSearchResult.id} status={staffSearchResult.status} name={staffSearchResult.name} phone={staffSearchResult.phone} enrollment_id={staffSearchResult.enrollment_id} lightTheme={props.lightTheme} />
             }
             <hr className={`${props.lightTheme ? 'border-gray-600' : 'border-gray-400' }`}/>
 
@@ -118,7 +118,7 @@ function StaffPage(props) {
             className='flex flex-col gap-5'>
                 {
                     staffRenderedBags.map(data => {
-                        return <StaffBagBox key={data.id} id={data.id} status={data.status} name={data.name} phone={data.phone} lightTheme={props.lightTheme} />
+                        return <StaffBagBox key={data.id} id={data.id} status={data.status} name={data.name} phone={data.phone} enrollment_id={data.enrollment_id} lightTheme={props.lightTheme} />
                     })
                 }
             </div>

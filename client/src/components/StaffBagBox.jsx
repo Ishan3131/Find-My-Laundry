@@ -279,7 +279,7 @@ function Bags(props) {
               }
             `}
           >
-            {props.orderId}
+            {props.enrollment_id} 
           </div>
 
         </div>
