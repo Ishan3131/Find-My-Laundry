@@ -253,9 +253,9 @@ function Bags(props) {
 
           <div
             className={`
-              text-xs
-              sm:text-sm
-
+               text-lg     
+              lg:text-2xl
+              font-bold
               ${props.lightTheme
 
                 ? "text-gray-600"
