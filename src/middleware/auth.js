@@ -36,7 +36,7 @@ function requireRoles(...allowedRoles) {
   const allowed = allowedRoles.map((role) => normalizeRole(role));
 
   return (req, res, next) => {
-    const userRole = normalizeRole(req.user?.role);
+    const userRole = normalizeRole(req.user?.username);
 
     if (!userRole || !allowed.includes(userRole)) {
       return res.status(403).json({

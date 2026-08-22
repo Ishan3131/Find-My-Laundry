@@ -109,6 +109,7 @@ router.get("/:id/details", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
+    console.log(req.user)
     const role = normalizeRole(req.user?.username);
 
     let selectFields = "id,status,updated_at";

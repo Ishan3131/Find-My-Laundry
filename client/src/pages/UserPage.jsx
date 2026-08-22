@@ -17,7 +17,7 @@ function UserPage(props) {
             try {
                     if(recentSearch != null && recentSearch.length > 0) { 
                         setLoading(true)
-                        const reqs = recentSearch.map(id => axios.get(`https://find-my-laundry.vercel.app/laundries/${id}`))
+                        const reqs = recentSearch.map(id => axios.get(props.base+`/laundries/${id}`))
                         const res = await Promise.allSettled(reqs)
                         const bags = res.filter(result => result.status == 'fulfilled').map(res => res.value.data)
                         setUserRecentSearch(bags)
@@ -40,7 +40,7 @@ function UserPage(props) {
         if(searchInputId) {
             try {
                 setSearchMessage('Searching...')
-                const bag = await axios.get(`https://find-my-laundry.vercel.app/laundries/${searchInputId}`)
+                const bag = await axios.get(props.base+`/laundries/${searchInputId}`)
                 console.log(bag)
                 setSearchMessage('')
                 setUserSearchResult(bag.data);

@@ -6,6 +6,7 @@ import UserPage from './pages/UserPage'
 
 function App() {
   const [lightTheme, setLightTheme] = useState(null)
+  const baseURL = 'https://Find-My-Laundry.vercel.app';
 
   useEffect(() => {
     let isLightTheme = JSON.parse(localStorage.getItem('lightTheme'))
@@ -19,9 +20,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<UserPage lightTheme={lightTheme} setLightTheme={setLightTheme} />} />
-        <Route path='/staff' element={<StaffPage lightTheme={lightTheme} setLightTheme={setLightTheme} />} />
-        <Route path='login' element={<LoginPage lightTheme={lightTheme} setLightTheme={setLightTheme} />} />
+        <Route path='/' element={<UserPage lightTheme={lightTheme} setLightTheme={setLightTheme} base={baseURL} />} />
+        <Route path='/staff' element={<StaffPage lightTheme={lightTheme} setLightTheme={setLightTheme} base={baseURL} />} />
+        <Route path='login' element={<LoginPage lightTheme={lightTheme} setLightTheme={setLightTheme} base={baseURL} />} />
       </Routes>
     </BrowserRouter>
   )

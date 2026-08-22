@@ -16,7 +16,7 @@ function StaffPage(props) {
     const [bagsCount, setBagsCount] = useState(0)
     const [allBagsData, setAllBagsData] = useState([])
     const [addBagForm, setAddBagForm] = useState(false)
-    const [newBag, setNewBag] = useState({id: '', name: '', phone: '', status: 'Pending'})
+    const [newBag, setNewBag] = useState({id: '', name: '', phone: '', enrollment_id: '', status: 'Pending'})
 
     useEffect(() => {
         async function loadData() {
@@ -24,7 +24,7 @@ function StaffPage(props) {
             if(token != null) {
                 try {
                     setLoading(true)
-                    const res = await axios.get('https://find-my-laundry.vercel.app/laundries', {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
+                    const res = await axios.get(props.base+'/laundries', {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
                     setStaffRenderedBags(res.data.laundries)
                     setAllBagsData(res.data.laundries)
                     setBagsCount(res.data.laundries.length)
@@ -46,7 +46,7 @@ function StaffPage(props) {
             try {
                 const token = localStorage.getItem('token')
                 setSearchMessage('Searching...')
-                const bag = await axios.get(`https://find-my-laundry.vercel.app/laundries/${searchInputId}/details`, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
+                const bag = await axios.get(props.base+`/laundries/${searchInputId}/details`, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
                 setSearchMessage('')
                 setStaffSearchResult(bag.data.laundry);
             }
@@ -58,10 +58,10 @@ function StaffPage(props) {
     }
 
     async function handleAddNewBag() {
-        if(newBag.status.length > 0 && newBag.name.trim().length > 0 && newBag.phone.trim().length > 0) {
+        if(newBag.status.length > 0 && newBag.name.trim().length > 0 && newBag.phone.trim().length > 0 && newBag.enrollment_id.trim().length > 0) {
             try {
                 const token = localStorage.getItem('token')
-                await axios.post(`https://find-my-laundry.vercel.app/laundries`, newBag, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
+                await axios.post(props.base+`/laundries`, newBag, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
                 setSearchMessage('New Bag Added')
                 setTimeout(() => setSearchMessage(''), 2000)
                 allBagsData.unshift(newBag)
@@ -105,7 +105,7 @@ function StaffPage(props) {
             <h1 className='font-bold text-2xl m-3'>{searchMessage}</h1>
 
             {
-            staffSearchResult != null && <StaffBagBox id={staffSearchResult.id} status={staffSearchResult.status} name={staffSearchResult.name} phone={staffSearchResult.phone} enrollment_id={staffSearchResult.enrollment_id} lightTheme={props.lightTheme} />
+            staffSearchResult != null && <StaffBagBox id={staffSearchResult.id} status={staffSearchResult.status} name={staffSearchResult.name} phone={staffSearchResult.phone} enrollment_id={staffSearchResult.enrollment_id} lightTheme={props.lightTheme} base={props.base} />
             }
             <hr className={`${props.lightTheme ? 'border-gray-600' : 'border-gray-400' }`}/>
 
@@ -118,7 +118,7 @@ function StaffPage(props) {
             className='flex flex-col gap-5'>
                 {
                     staffRenderedBags.map(data => {
-                        return <StaffBagBox key={data.id} id={data.id} status={data.status} name={data.name} phone={data.phone} enrollment_id={data.enrollment_id} lightTheme={props.lightTheme} />
+                        return <StaffBagBox key={data.id} id={data.id} status={data.status} name={data.name} phone={data.phone} enrollment_id={data.enrollment_id} lightTheme={props.lightTheme} base={props.base} />
                     })
                 }
             </div>

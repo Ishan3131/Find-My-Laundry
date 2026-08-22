@@ -33,7 +33,7 @@ function LoginPage(props) {
     if(loginInfo.username.trim().length > 0 && loginInfo.password.trim().length > 0) {
       setLoading(true)
       try{
-        const res = await axios.post('https://find-my-laundry.vercel.app/auth/login',
+        const res = await axios.post(props.base+'/auth/login',
                                       {"username": loginInfo.username, "password": loginInfo.password},
                                       {'headers': {'Content-Type': 'application/json'}})
         localStorage.setItem('token', res.data.token);
