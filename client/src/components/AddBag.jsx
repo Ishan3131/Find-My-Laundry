@@ -179,14 +179,14 @@ function AddBag(props) {
             `}
           />
           
-         <input id="enrolment_id" 
+         <input id="enrollment_id" 
           type="text"
-          placeholder="Enter Enrolment ID"
-            value={props.newBag.enrolment_id}
+          placeholder="Enter Enrollment ID"
+            value={props.newBag.enrollment_id}
             onChange={(e)=> 
               props.setNewBag({
                 ...props.newBag,
-                enrolment_id:e.target.value
+                enrollment_id:e.target.value
 
               })
             }

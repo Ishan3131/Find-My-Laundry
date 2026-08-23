@@ -161,7 +161,7 @@ router.post("/", requireRoles("admin"), async (req, res) => {
 
     if (error) {
       if (error.code === "23505") {
-        return res.status(409).json({ error: "Phone number already exists" });
+        return res.status(409).json({ error: "Unique value required" });
       }
       throw error;
     }

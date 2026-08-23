@@ -55,7 +55,8 @@ function Bags(props) {
         await axios.delete(`https://find-my-laundry.vercel.app/laundries/${props.id}`, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
         setIsDeleted(true)
         setMessageBoxText('Bag Removed')
-        setMessageBoxClass('text-lime-400')
+        setMessageBoxClass('text-[#2CDB00]')
+        props.setBagCount(prev => prev-1)
         setTimeout(() => setPopMessage(false), 1500)
       }
       catch (err) {
