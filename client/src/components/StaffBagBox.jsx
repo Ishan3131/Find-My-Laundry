@@ -24,7 +24,7 @@ function Bags(props) {
       setMessageBoxClass('text-blue-400')
       setMessageBoxText('Updating...')
       await axios.patch(`https://find-my-laundry.vercel.app/laundries/${props.id}`, {'status': status}, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
-      setMessageBoxClass('text-lime-400')
+      setMessageBoxClass('text-[#2CDB00]')
       setMessageBoxText('Status Updated')
       setPopMessage(true)
       setTimeout(() => setPopMessage(false), 1500)
@@ -124,7 +124,8 @@ function Bags(props) {
         </div>
 
 
-    <div className='flex flex-col items-center gap-5'>
+    <div className='flex items-center gap-27'>
+       { popMessage && <MessageBox style={messageBoxClass} text={messageBoxText} lightTheme={props.lightTheme} /> }
           <div className='float flex gap-5'>
 
         {statusChanged && <button className='text-[20px]' onClick={updateStatus}>
@@ -341,7 +342,6 @@ function Bags(props) {
         </button>
 
       </div>
-    { popMessage && <MessageBox style={messageBoxClass} text={messageBoxText} lightTheme={props.lightTheme} /> }
     
     </div>
 
