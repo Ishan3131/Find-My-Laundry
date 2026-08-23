@@ -1,7 +1,10 @@
+
 import { useState } from "react";
 import shoppingBag from "../assets/icons/shopping-bag.svg";
 import MessageBox from "./MessageBox";
 import axios from "axios";
+import tick from "../assets/icons/tick.svg";
+import cross from "../assets/icons/cross.svg";
 
 let prevStatus = null
 function Bags(props) {
@@ -19,7 +22,7 @@ function Bags(props) {
       setPopMessage(true)
       setMessageBoxClass('text-blue-400')
       setMessageBoxText('Updating...')
-      await axios.patch(props.base+`/laundries/${props.id}`, {'status': status}, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
+      await axios.patch(`https://find-my-laundry.vercel.app/laundries/${props.id}`, {'status': status}, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
       setMessageBoxClass('text-lime-400')
       setMessageBoxText('Status Updated')
       setPopMessage(true)
@@ -48,7 +51,7 @@ function Bags(props) {
         setMessageBoxClass('text-blue-400')
         setMessageBoxText('Deleting...')
         setPopMessage(true)
-        await axios.delete(props.base+`/laundries/${props.id}`, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
+        await axios.delete(`https://find-my-laundry.vercel.app/laundries/${props.id}`, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
         setIsDeleted(true)
         setMessageBoxText('Bag Removed')
         setMessageBoxClass('text-lime-400')
@@ -93,10 +96,7 @@ function Bags(props) {
       `}
     >
 
-
       <div className="flex items-start justify-between">
-
-
 
         <div>
 
@@ -124,6 +124,20 @@ function Bags(props) {
 
 
       <div className='flex flex-col items-center gap-5'>
+          <div className='float flex gap-5'>
+        {statusChanged && <button className='text-[20px]' onClick={updateStatus}>
+          <img
+  src={tick} alt="Confirm" className={`w-7 h-7 ${
+    props.lightTheme ? "brightness-0" : "brightness-0 invert"
+  }`}/>
+        </button> }
+        {statusChanged && <button className='text-[20px]' onClick={abortStatusUpdate}>
+          <img
+  src={cross} alt="Confirm" className={`w-7 h-7 ${
+    props.lightTheme ? "brightness-0" : "brightness-0 invert"
+  }`}/>
+        </button> }
+        
         <select
 
           value={status}
@@ -192,9 +206,7 @@ function Bags(props) {
           </option>
 
         </select>
-      <div className='float flex gap-5'>
-        {statusChanged && <button className='text-[20px]' onClick={updateStatus}>✅</button> }
-        {statusChanged && <button className='text-[20px]' onClick={abortStatusUpdate}>❌</button> }
+    
       </div>
         </div>
       </div>
@@ -253,9 +265,9 @@ function Bags(props) {
 
           <div
             className={`
-              text-xs
+              text-base
               sm:text-sm
-              
+
               ${props.lightTheme
 
                 ? "text-gray-600"
@@ -269,8 +281,8 @@ function Bags(props) {
 
           <div
             className={`
+              text-lg
               
-              text-lg     
               lg:text-2xl
               font-bold
 
@@ -320,6 +332,7 @@ function Bags(props) {
 
       </div>
     { popMessage && <MessageBox style={messageBoxClass} text={messageBoxText} lightTheme={props.lightTheme} /> }
+    
     </div>
 
   )
