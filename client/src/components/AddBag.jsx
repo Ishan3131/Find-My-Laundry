@@ -178,6 +178,48 @@ function AddBag(props) {
 
             `}
           />
+          
+         <input id="enrolment_id" 
+          type="text"
+          placeholder="Enter Enrolment ID"
+            value={props.newBag.enrolment_id}
+            onChange={(e)=> 
+              props.setNewBag({
+                ...props.newBag,
+                enrolment_id:e.target.value
+
+              })
+            }
+          
+          
+          className={`
+
+              w-full
+
+              px-3
+              py-2
+
+              rounded-xl
+
+              outline-none
+
+              text-sm
+
+              transition-all
+              duration-300
+
+              ${props.lightTheme
+
+                ? "bg-gray-100"
+
+                : "bg-zinc-800"
+              }
+              `
+            }
+
+
+/>
+         
 
 
          
