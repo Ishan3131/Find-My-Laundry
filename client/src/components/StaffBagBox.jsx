@@ -123,7 +123,10 @@ function Bags(props) {
         </div>
 
 
-     {statusChanged && <button className='text-[20px]' onClick={updateStatus}>
+    <div className='flex flex-col items-center gap-5'>
+          <div className='float flex gap-5'>
+
+        {statusChanged && <button className='text-[20px]' onClick={updateStatus}>
 
           <img
   src={tick} alt="Confirm" className={`w-7 h-7 ${
