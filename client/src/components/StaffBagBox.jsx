@@ -20,6 +20,7 @@ function Bags(props) {
     try {
       const token = localStorage.getItem('token');
       setPopMessage(true)
+      setStatusChanged(false)
       setMessageBoxClass('text-blue-400')
       setMessageBoxText('Updating...')
       await axios.patch(`https://find-my-laundry.vercel.app/laundries/${props.id}`, {'status': status}, {'headers': {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}})
