@@ -123,19 +123,23 @@ function Bags(props) {
         </div>
 
 
-      <div className='flex flex-col items-center gap-5'>
-          <div className='float flex gap-5'>
-        {statusChanged && <button className='text-[20px]' onClick={updateStatus}>
+     {statusChanged && <button className='text-[20px]' onClick={updateStatus}>
+
           <img
   src={tick} alt="Confirm" className={`w-7 h-7 ${
     props.lightTheme ? "brightness-0" : "brightness-0 invert"
   }`}/>
-        </button> }
+
+        </button> 
+        }
         {statusChanged && <button className='text-[20px]' onClick={abortStatusUpdate}>
           <img
+
   src={cross} alt="Confirm" className={`w-7 h-7 ${
+
     props.lightTheme ? "brightness-0" : "brightness-0 invert"
   }`}/>
+  
         </button> }
         
         <select
