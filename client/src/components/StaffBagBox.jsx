@@ -287,11 +287,19 @@ function Bags(props) {
             {props.phone}
           </div>
 
-          <div
+  
+
+        </div>
+      </div>
+
+
+
+    <div className="flex justify-between mt-2">
+        <span
             className={`
               text-lg
               
-              lg:text-2xl
+              lg:text-1xl
               font-bold
 
               ${props.lightTheme
@@ -303,14 +311,8 @@ function Bags(props) {
             `}
           >
             {props.enrollment_id} 
-          </div>
+          </span>
 
-        </div>
-      </div>
-
-
-
-      <div className="flex justify-end mt-2">
 
         <button
           onClick={handleDeleteBag}
