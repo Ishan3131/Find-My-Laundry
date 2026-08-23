@@ -121,7 +121,7 @@ function StaffPage(props) {
             {loading && <h1 className='font-bold text-2xl m-3'>Loading...</h1>}
             <div className='flex justify-between p-2 items-center'>
                 <h1 className='font-bold text-2xl m-3'>Bags Count: {bagsCount}</h1>
-                <button className={`${props.lightTheme? 'bg-[#7eff61]' : 'bg-[#1c9600]'} h-fit w-fit px-3 py-1 font-bold rounded-[5px] ${props.lightTheme?'text-black': 'text-white'}`} onClick={() => setAddBagForm(true)}>New Bag</button>
+                         <button className={`${props.lightTheme? 'bg-[#b5faa5]' : 'bg-[#34b617]'} h-fit w-fit px-3 py-1 font-bold rounded-[5px] ${props.lightTheme?'text-black': 'text-white'}`} onClick={() => setAddBagForm(true)}>New Bag</button>
             </div>
             <div
             className='flex flex-col gap-5'>
