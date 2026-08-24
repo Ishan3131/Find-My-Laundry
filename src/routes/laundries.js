@@ -145,13 +145,13 @@ router.get("/", async (req, res) => {
 
 router.post("/", requireRoles("admin"), async (req, res) => {
   try {
-    const { id, name, phone, status } = req.body;
+    const { id, name, phone, enrollment_id, status } = req.body;
 
-    if (!id || !name || !phone || !status) {
-      return res.status(400).json({ error: "id, name, phone, and status are required" });
+    if (!id || !name || !phone || !status || !enrollment_id) {
+      return res.status(400).json({ error: "id, name, phone, enrollment_id and status are required" });
     }
 
-    const insertData = { id, name, phone, status };
+    const insertData = { id, name, phone, enrollment_id, status };
 
     const { data, error } = await supabase
       .from("laundries")
